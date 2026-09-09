@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { categories, slugifyCategory } from "@/lib/categories";
 
@@ -15,8 +16,15 @@ export function SiteHeader() {
 
       {/* Header / logo */}
       <header className="flex items-center justify-between border-b border-neutral-200 px-4 py-4">
-        <Link href="/" className="text-3xl font-extrabold tracking-tight text-brand-red">
-          FAST NEWS NETWORK
+        <Link href="/" className="shrink-0">
+          <Image
+            src="/logo.png"
+            alt="Fast News Network"
+            width={700}
+            height={237}
+            priority
+            className="h-14 w-auto sm:h-16"
+          />
         </Link>
         <div className="text-sm text-neutral-500">Search</div>
       </header>
