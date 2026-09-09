@@ -9,8 +9,17 @@ export function SiteHeader() {
       <div className="flex items-center justify-between bg-brand-dark px-4 py-1.5 text-xs text-neutral-300">
         <span>Wednesday, September 9, 2026</span>
         <div className="flex gap-4">
-          <span>Watch Live</span>
-          <span>Sign In</span>
+          <button type="button" className="hover:underline">
+            Shop
+          </button>
+          <a
+            href="https://headquarterscomedy.beehiiv.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            Newsletter
+          </a>
         </div>
       </div>
 
