@@ -1,13 +1,5 @@
-const categories = [
-  "U.S.",
-  "World",
-  "Politics",
-  "Business",
-  "Tech",
-  "Entertainment",
-  "Sports",
-  "Opinion",
-];
+import Link from "next/link";
+import { categories, slugifyCategory } from "@/lib/categories";
 
 export function SiteHeader() {
   return (
@@ -23,9 +15,9 @@ export function SiteHeader() {
 
       {/* Header / logo */}
       <header className="flex items-center justify-between border-b border-neutral-200 px-4 py-4">
-        <a href="/" className="text-3xl font-extrabold tracking-tight text-brand-red">
+        <Link href="/" className="text-3xl font-extrabold tracking-tight text-brand-red">
           FAST NEWS NETWORK
-        </a>
+        </Link>
         <div className="text-sm text-neutral-500">Search</div>
       </header>
 
@@ -33,8 +25,10 @@ export function SiteHeader() {
       <nav className="overflow-x-auto bg-brand-red">
         <ul className="flex min-w-max gap-6 px-4 py-2 text-sm font-semibold uppercase text-white">
           {categories.map((c) => (
-            <li key={c} className="cursor-pointer whitespace-nowrap hover:underline">
-              {c}
+            <li key={c} className="whitespace-nowrap">
+              <Link href={`/category/${slugifyCategory(c)}`} className="hover:underline">
+                {c}
+              </Link>
             </li>
           ))}
         </ul>
@@ -52,5 +46,3 @@ export function SiteHeader() {
     </>
   );
 }
-
-export { categories };

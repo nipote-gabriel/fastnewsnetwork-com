@@ -1,0 +1,73 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ImagePlaceholder } from "@/components/ImagePlaceholder";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
+import { categories, categoryBySlug, slugifyCategory } from "@/lib/categories";
+import { stories } from "@/lib/stories";
+
+export function generateStaticParams() {
+  return categories.map((c) => ({ slug: slugifyCategory(c) }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const category = categoryBySlug(slug);
+  if (!category) return {};
+  return {
+    title: `${category} | Fast News Network`,
+    description: `Latest ${category} stories from Fast News Network.`,
+  };
+}
+
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const category = categoryBySlug(slug);
+  if (!category) notFound();
+
+  const categoryStories = stories.filter((s) => s.category === category);
+
+  return (
+    <main className="mx-auto max-w-6xl">
+      <SiteHeader />
+
+      <div className="border-b-4 border-brand-red px-4 py-6">
+        <h1 className="text-3xl font-extrabold uppercase tracking-tight">{category}</h1>
+      </div>
+
+      <section className="px-4 py-6">
+        {categoryStories.length === 0 ? (
+          <p className="text-neutral-600">
+            No stories in this category yet. Check back soon.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {categoryStories.map((s) => (
+              <Link key={s.slug} href={`/story/${s.slug}`}>
+                <ImagePlaceholder label="Story Image" />
+                <span className="mt-2 inline-block text-xs font-bold uppercase text-brand-red">
+                  {s.category}
+                </span>
+                <h2 className="mt-1 text-base font-bold leading-snug hover:underline">
+                  {s.headline}
+                </h2>
+                <p className="mt-1 text-sm text-neutral-600">{s.dek}</p>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <SiteFooter />
+    </main>
+  );
+}
